@@ -1,0 +1,60 @@
+[2025-07-07T16:49:02.240Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T16:49:02.280Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T16:51:09.472Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T16:51:09.529Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T16:56:51.602Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T16:59:26.081Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T16:59:36.853Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T16:59:36.903Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T17:01:28.701Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T17:01:28.786Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T17:01:34.931Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T17:01:34.986Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T17:01:37.017Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T17:01:37.072Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T17:04:25.961Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T17:04:26.054Z] [31merror[39m: path is not defined path is not defined
+[2025-07-07T17:07:04.188Z] [31merror[39m: pick is not defined pick is not defined
+[2025-07-07T17:07:04.192Z] [31merror[39m: pick is not defined pick is not defined
+[2025-07-08T06:16:21.965Z] [31merror[39m: unhandledRejection: Cannot create property 'Symbol(level)' on string 'Connected to MongoDB'
+TypeError: Cannot create property 'Symbol(level)' on string 'Connected to MongoDB'
+    at DerivedLogger.log (C:\Users\veerv\Desktop\Pheonix\Me\projects\Forumly-backend\node_modules\winston\lib\winston\logger.js:214:20)
+    at file:///C:/Users/veerv/Desktop/Pheonix/Me/projects/Forumly-backend/index.js:15:22
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-08T06:16:50.835Z] [32minfo[39m: Loading the server
+[2025-07-08T06:16:50.880Z] [31merror[39m: unhandledRejection: Cannot create property 'Symbol(level)' on string 'Connected to MongoDB'
+TypeError: Cannot create property 'Symbol(level)' on string 'Connected to MongoDB'
+    at DerivedLogger.log (C:\Users\veerv\Desktop\Pheonix\Me\projects\Forumly-backend\node_modules\winston\lib\winston\logger.js:214:20)
+    at file:///C:/Users/veerv/Desktop/Pheonix/Me/projects/Forumly-backend/index.js:15:22
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-08T06:16:58.090Z] [32minfo[39m: Loading the server
+[2025-07-08T06:16:58.130Z] [32minfo[39m: Connected to MongoDB
+[2025-07-08T07:40:50.033Z] [32minfo[39m: Loading the server
+[2025-07-08T07:40:50.054Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T03:39:51.020Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T03:40:27.955Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T03:40:59.385Z] [32minfo[39m: Loading the server
+[2025-07-09T03:40:59.413Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T10:08:41.568Z] [32minfo[39m: Loading the server
+[2025-07-09T10:08:41.588Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T10:54:40.419Z] [32minfo[39m: Loading the server
+[2025-07-09T10:54:40.450Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T11:06:31.736Z] [32minfo[39m: Loading the server
+[2025-07-09T11:07:01.737Z] [31merror[39m: unhandledRejection: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at _handleConnectionErrors (C:\Users\veerv\Desktop\Pheonix\Me\projects\Forumly-backend\node_modules\mongoose\lib\connection.js:1165:11)
+    at NativeConnection.openUri (C:\Users\veerv\Desktop\Pheonix\Me\projects\Forumly-backend\node_modules\mongoose\lib\connection.js:1096:11)
+[2025-07-09T11:07:13.894Z] [32minfo[39m: Loading the server
+[2025-07-09T11:07:13.923Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T11:35:35.616Z] [32minfo[39m: Loading the server
+[2025-07-09T11:35:35.636Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T11:35:39.007Z] [32minfo[39m: Loading the server
+[2025-07-09T11:35:39.052Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T11:39:53.752Z] [32minfo[39m: Loading the server
+[2025-07-09T11:39:53.784Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T11:40:00.236Z] [32minfo[39m: Loading the server
+[2025-07-09T11:40:00.263Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T11:40:24.429Z] [32minfo[39m: Loading the server
+[2025-07-09T11:40:24.449Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T12:14:34.681Z] [32minfo[39m: Loading the server
+[2025-07-09T12:14:34.711Z] [32minfo[39m: Connected to MongoDB
