@@ -11,7 +11,7 @@ const discussionSchema = new mongoose.Schema({
   tags: [
     {
       _id: false,
-      tagId: { type: mongoose.Types.ObjectId, required: true },
+      _id: { type: mongoose.Types.ObjectId, required: true },
       name: { type: String, required: true },
     },
   ],

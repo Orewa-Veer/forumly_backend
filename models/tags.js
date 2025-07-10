@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Joi from "joi";
 const tagSchema = new mongoose.Schema({
+  tagId: mongoose.Types.ObjectId,
   name: { type: String, required: true },
   body: { type: String, required: true },
 });

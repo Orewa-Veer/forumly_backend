@@ -11,6 +11,7 @@ import login from "./routes/auth.js";
 import logger from "./middleware/logger.js";
 import currentUser from "./routes/me.js";
 import err from "./middleware/error.js";
+import replies from "./routes/replies.js";
 mongoose
   .connect("mongodb://localhost/formuly")
   .then(() => logger.info("Connected to MongoDB"));
@@ -30,6 +31,7 @@ app.use("/api/register", user);
 app.use("/api/me", currentUser);
 app.use("/api/login", login);
 app.use("/api/tags", tag);
+app.use("/api/replies", replies);
 app.use("/api/discussion", discussion);
 app.use(err);
 

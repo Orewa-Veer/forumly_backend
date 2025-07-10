@@ -58,3 +58,98 @@ MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUS
 [2025-07-09T11:40:24.449Z] [32minfo[39m: Connected to MongoDB
 [2025-07-09T12:14:34.681Z] [32minfo[39m: Loading the server
 [2025-07-09T12:14:34.711Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T19:37:43.936Z] [32minfo[39m: Loading the server
+[2025-07-09T19:37:43.959Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T19:38:40.366Z] [31merror[39m: asc is not defined asc is not defined
+[2025-07-09T19:38:45.361Z] [31merror[39m: asc is not defined asc is not defined
+[2025-07-09T19:38:45.379Z] [31merror[39m: asc is not defined asc is not defined
+[2025-07-09T19:38:55.432Z] [31merror[39m: asc is not defined asc is not defined
+[2025-07-09T19:38:55.459Z] [31merror[39m: asc is not defined asc is not defined
+[2025-07-09T19:39:29.945Z] [32minfo[39m: Loading the server
+[2025-07-09T19:39:29.989Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T19:40:19.508Z] [32minfo[39m: Loading the server
+[2025-07-09T19:40:19.532Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T19:43:16.533Z] [32minfo[39m: Loading the server
+[2025-07-09T19:43:16.563Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T19:56:11.580Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T19:56:11.639Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T19:58:36.476Z] [32minfo[39m: Loading the server
+[2025-07-09T19:58:36.510Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T19:58:37.827Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:01:02.230Z] [32minfo[39m: Loading the server
+[2025-07-09T20:01:02.267Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:01:07.792Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:01:07.807Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:03:00.575Z] [32minfo[39m: Loading the server
+[2025-07-09T20:03:00.616Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:03:05.188Z] [32minfo[39m: Loading the server
+[2025-07-09T20:03:05.250Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:03:13.722Z] [32minfo[39m: Loading the server
+[2025-07-09T20:03:13.790Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:04:52.178Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:05:39.854Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:05:45.239Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:05:45.292Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:06:03.162Z] [32minfo[39m: Loading the server
+[2025-07-09T20:06:03.194Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:06:03.266Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:06:17.061Z] [32minfo[39m: Loading the server
+[2025-07-09T20:06:17.100Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:06:26.286Z] [32minfo[39m: Loading the server
+[2025-07-09T20:06:26.323Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:06:27.116Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:07:25.340Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:08:11.931Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:08:20.510Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:08:20.586Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:09:47.372Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:10:24.601Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:11:20.062Z] [32minfo[39m: Loading the server
+[2025-07-09T20:11:20.095Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:11:20.246Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:11:21.669Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:11:59.574Z] [32minfo[39m: Loading the server
+[2025-07-09T20:11:59.602Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:14:00.537Z] [32minfo[39m: Loading the server
+[2025-07-09T20:14:00.581Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:14:29.877Z] [31merror[39m: id is not defined id is not defined
+[2025-07-09T20:14:52.748Z] [32minfo[39m: Loading the server
+[2025-07-09T20:14:52.811Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:15:04.272Z] [32minfo[39m: Loading the server
+[2025-07-09T20:15:04.329Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:24:09.463Z] [32minfo[39m: Loading the server
+[2025-07-09T20:24:09.492Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:25:03.468Z] [32minfo[39m: Loading the server
+[2025-07-09T20:25:03.520Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:27:51.224Z] [32minfo[39m: Loading the server
+[2025-07-09T20:27:51.267Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:27:53.902Z] [31merror[39m: Cannot set headers after they are sent to the client Cannot set headers after they are sent to the client
+[2025-07-09T20:46:29.318Z] [31merror[39m: Discussion validation failed: tags.0.tagId: Path `tagId` is required. Discussion validation failed: tags.0.tagId: Path `tagId` is required.
+[2025-07-09T20:46:29.390Z] [31merror[39m: Discussion validation failed: tags.0.tagId: Path `tagId` is required. Discussion validation failed: tags.0.tagId: Path `tagId` is required.
+[2025-07-09T20:46:35.491Z] [31merror[39m: Discussion validation failed: tags.0.tagId: Path `tagId` is required. Discussion validation failed: tags.0.tagId: Path `tagId` is required.
+[2025-07-09T20:48:35.889Z] [32minfo[39m: Loading the server
+[2025-07-09T20:48:35.918Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:48:37.257Z] [31merror[39m: Discussion validation failed: tags.0.tagId: Path `tagId` is required. Discussion validation failed: tags.0.tagId: Path `tagId` is required.
+[2025-07-09T20:52:11.996Z] [32minfo[39m: Loading the server
+[2025-07-09T20:52:12.060Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:52:45.186Z] [32minfo[39m: Loading the server
+[2025-07-09T20:52:45.209Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:53:54.915Z] [32minfo[39m: Loading the server
+[2025-07-09T20:53:54.946Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:56:50.120Z] [31merror[39m: Cannot set headers after they are sent to the client Cannot set headers after they are sent to the client
+[2025-07-09T20:57:47.501Z] [32minfo[39m: Loading the server
+[2025-07-09T20:57:47.539Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:57:50.174Z] [31merror[39m: Cannot set headers after they are sent to the client Cannot set headers after they are sent to the client
+[2025-07-09T20:59:02.242Z] [32minfo[39m: Loading the server
+[2025-07-09T20:59:02.277Z] [32minfo[39m: Connected to MongoDB
+[2025-07-09T20:59:06.166Z] [31merror[39m: Cannot set headers after they are sent to the client Cannot set headers after they are sent to the client
+[2025-07-09T21:01:16.278Z] [31merror[39m: Cannot set headers after they are sent to the client Cannot set headers after they are sent to the client
+[2025-07-09T21:01:16.344Z] [31merror[39m: Cannot set headers after they are sent to the client Cannot set headers after they are sent to the client
+[2025-07-10T03:57:43.192Z] [31merror[39m: Cannot set headers after they are sent to the client Cannot set headers after they are sent to the client
+[2025-07-10T03:57:59.007Z] [32minfo[39m: Loading the server
+[2025-07-10T03:57:59.027Z] [32minfo[39m: Connected to MongoDB
+[2025-07-10T03:58:29.911Z] [31merror[39m: Cannot set headers after they are sent to the client Cannot set headers after they are sent to the client
+[2025-07-10T03:59:12.197Z] [31merror[39m: Cannot set headers after they are sent to the client Cannot set headers after they are sent to the client
+[2025-07-10T04:02:21.088Z] [32minfo[39m: Loading the server
+[2025-07-10T04:02:21.136Z] [32minfo[39m: Connected to MongoDB
+[2025-07-10T04:03:01.174Z] [31merror[39m: E11000 duplicate key error collection: formuly.users index: username_1 dup key: { username: "Virendra" } E11000 duplicate key error collection: formuly.users index: username_1 dup key: { username: "Virendra" }

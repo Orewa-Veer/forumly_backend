@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Joi from "joi";
 
 import { ref } from "process";
-import upvotesSchema from "./upvotes";
+import upvotesSchema from "./upvotes.js";
 const repliesSchema = new mongoose.Schema({
   parentId: { type: mongoose.Types.ObjectId, required: true },
   user: { type: mongoose.Types.ObjectId, ref: "User", required: true },
@@ -15,7 +15,6 @@ const Reply = mongoose.model("Reply", repliesSchema);
 function replyValidate(body) {
   const objectId = Joi.string().pattern(/^[0-9a-fA-F]{24}$/);
   const schema = Joi.object({
-    parentId: objectId.required(),
     body: Joi.string().required().max(20000),
   });
   const { error } = schema.validate(body);

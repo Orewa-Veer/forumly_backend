@@ -12,7 +12,7 @@ router.get("/", auth, async (req, res) => {
     limit,
     ...filters
   } = req.query;
-  const sortOrder = order === asc ? 1 : -1;
+  const sortOrder = order === "asc" ? 1 : -1;
   if (page) page = parseInt(page);
   if (limit) limit = parseInt(limit);
   const result = await Discussion.find({ ...filters })
@@ -37,10 +37,11 @@ router.post("/", auth, async (req, res) => {
     req.body.tagId.map(async (tag) => {
       const tagin = await Tag.findById(tag);
       if (!tagin) throw new Error("No such tag exists with the given id");
+
       return tagin;
     })
   );
-
+  console.log(allTags);
   const discussion = new Discussion({
     title: req.body.title,
     body: req.body.body,

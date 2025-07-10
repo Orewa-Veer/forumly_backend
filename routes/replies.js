@@ -1,25 +1,28 @@
 import express from "express";
-import { Reply, replyValidate } from "../models/replies";
-import { Discussion } from "../models/Discussion";
+import { Reply, replyValidate } from "../models/replies.js";
+import { Discussion } from "../models/Discussion.js";
 import mongoose from "mongoose";
+import auth from "../middleware/auth.js";
 const router = express.Router();
 router.get("/:id", async (req, res) => {
   const parentId = req.params.id;
-  const discuss = await Discussion.findById(id);
+  const discuss = await Discussion.findById(parentId);
   if (!discuss) return res.status(404).send("No such discussion found");
   const result = await Reply.find({ parentId: parentId });
   res.json(result);
 });
 router.post("/:id", auth, async (req, res) => {
   const parentId = req.params.id;
+  console.log(parentId);
+  console.log(req.user._id);
   const error = replyValidate(req.body);
-  if (error) return res.status(400).send(error);
-  const discuss = await Discussion.findById(id);
+  if (error) return res.status(400).send(error, "This is validation error");
+  const discuss = await Discussion.findById(parentId);
   if (!discuss) return res.status(404).send("No such discussion found");
   const reply = new Reply({
     user: req.user._id,
-    parentId: id,
-    body: req.body,
+    parentId: parentId,
+    body: req.body.body,
   });
   const session = await mongoose.startSession();
   try {
@@ -34,7 +37,7 @@ router.post("/:id", auth, async (req, res) => {
     res.json(reply);
   } catch (ex) {
     await session.abortTransaction();
-    res.status(500).json({ error: "Could not save reply" });
+    res.status(500).send(ex).json({ error: "Could not save reply" });
   } finally {
     session.endSession();
   }
@@ -61,3 +64,4 @@ router.delete("/:id", auth, async (req, res) => {
     session.endSession();
   }
 });
+export default router;
