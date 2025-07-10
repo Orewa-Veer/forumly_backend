@@ -3,23 +3,40 @@ import { Discussion, discussValidate } from "../models/Discussion.js";
 import { User } from "../models/register.js";
 import { Tag } from "../models/tags.js";
 import auth from "../middleware/auth.js";
+import mongoose from "mongoose";
 const router = express.Router();
 router.get("/", auth, async (req, res) => {
   const {
     sort = "createdAt",
     order = "desc",
-    page,
-    limit,
+    page = 1,
+    limit = 10,
     ...filters
   } = req.query;
+
   const sortOrder = order === "asc" ? 1 : -1;
-  if (page) page = parseInt(page);
-  if (limit) limit = parseInt(limit);
-  const result = await Discussion.find({ ...filters })
+  const pageNum = Math.max(1, parseInt(page));
+  const pageLim = Math.min(Math.max(10, parseInt(limit)), 100);
+  console.log(filters);
+  // creating filters
+  const filter = {};
+  if (filters.user && mongoose.isValidObjectId(filters.user)) {
+    filter.user = new mongoose.Types.ObjectId(filters.user);
+  }
+  // if (filters["tags._id"] && mongoose.isValidObjectId(filters[tags._id])) {
+  //   filter["tags._id"] = new mongoose.Types.ObjectId(filter["tags._id"]);
+  // }
+  if (filters.isSolved) {
+    filter.isSolved = filters.isSolved === "true";
+  }
+  if (filters.title) {
+    filter.title = { $regex: filters.title, $options: "i" };
+  }
+  console.log(sort);
+  const result = await Discussion.find({ ...filter })
     .populate("user")
-    .sort({ [sort]: sortOrder })
-    .limit(limit)
-    .skip((page - 1) * limit);
+    .limit(pageLim)
+    .skip((pageNum - 1) * pageLim);
   res.json(result);
 });
 router.get("/:id", async (req, res) => {

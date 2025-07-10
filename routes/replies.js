@@ -8,7 +8,7 @@ router.get("/:id", async (req, res) => {
   const parentId = req.params.id;
   const discuss = await Discussion.findById(parentId);
   if (!discuss) return res.status(404).send("No such discussion found");
-  const result = await Reply.find({ parentId: parentId });
+  const result = await Reply.find({ parentId: parentId }).populate("user");
   res.json(result);
 });
 router.post("/:id", auth, async (req, res) => {
@@ -46,7 +46,10 @@ router.delete("/:id", auth, async (req, res) => {
   const reqId = req.params.id;
   const reply = await Reply.findById(reqId);
   if (!reply) return res.status(404).send("No such reply found");
-  if (reply.user !== req.user._id) return res.status(403).send("Forbidden");
+  console.log(`${reply.user}`);
+  console.log(req.user._id);
+  if (`${reply.user}` !== req.user._id)
+    return res.status(403).send("Forbidden");
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
@@ -57,6 +60,7 @@ router.delete("/:id", auth, async (req, res) => {
       { session }
     );
     await session.commitTransaction();
+    res.send("Deleted Succesfully");
   } catch (ex) {
     await session.abortTransaction();
     res.status(500).json({ error: "Can not delete the reply" });
