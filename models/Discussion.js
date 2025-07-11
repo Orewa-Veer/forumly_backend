@@ -1,7 +1,6 @@
 import Joi from "joi";
 import mongoose from "mongoose";
 
-import upvotesSchema from "./upvotes.js";
 const discussionSchema = new mongoose.Schema({
   user: { type: mongoose.Types.ObjectId, ref: "User", required: true },
   title: { type: String, required: true, minlength: 10, maxlength: 1000 },
@@ -15,7 +14,7 @@ const discussionSchema = new mongoose.Schema({
       name: { type: String, required: true },
     },
   ],
-  upvotes: { type: [upvotesSchema], default: [] },
+  upvoteCounter: { type: Number, default: 0 },
   isSolved: { type: Boolean, default: false },
 });
 const Discussion = mongoose.model("Discussion", discussionSchema);

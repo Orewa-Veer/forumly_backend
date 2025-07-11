@@ -1,14 +1,12 @@
-import mongoose from "mongoose";
 import Joi from "joi";
+import mongoose from "mongoose";
 
-import { ref } from "process";
-import upvotesSchema from "./upvotes.js";
 const repliesSchema = new mongoose.Schema({
   parentId: { type: mongoose.Types.ObjectId, required: true },
   user: { type: mongoose.Types.ObjectId, ref: "User", required: true },
   body: { type: String, minlength: 10, maxlength: 2000 },
   createdAt: { type: Date, default: Date.now() },
-  upvotes: { type: [upvotesSchema], default: [] },
+  upvotesCounter: { type: Number, default: 0 },
   isSolution: { type: Boolean, default: false },
 });
 const Reply = mongoose.model("Reply", repliesSchema);
@@ -20,4 +18,4 @@ function replyValidate(body) {
   const { error } = schema.validate(body);
   return error;
 }
-export { Reply, replyValidate, repliesSchema };
+export { repliesSchema, Reply, replyValidate };
