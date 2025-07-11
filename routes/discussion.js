@@ -35,6 +35,7 @@ router.get("/", auth, async (req, res) => {
   console.log(sort);
   const result = await Discussion.find({ ...filter })
     .populate("user")
+    .sort({ [sort]: sortOrder })
     .limit(pageLim)
     .skip((pageNum - 1) * pageLim);
   res.json(result);
@@ -45,11 +46,9 @@ router.get("/:id", async (req, res) => {
   res.json(result);
 });
 router.post("/", auth, async (req, res) => {
-  const error = discussValidate(req.body);
+  const error = discussValidate({ ...req.body, userId: req.user._id });
   if (error) return res.status(400).send(error);
-  const user = await User.findById(req.body.userId);
-  if (!user)
-    return res.status(400).send("No such user exists with the given id");
+
   const allTags = await Promise.all(
     req.body.tagId.map(async (tag) => {
       const tagin = await Tag.findById(tag);
@@ -62,7 +61,7 @@ router.post("/", auth, async (req, res) => {
   const discussion = new Discussion({
     title: req.body.title,
     body: req.body.body,
-    user: { _id: user._id },
+    user: { _id: req.user._id },
     tags: allTags,
   });
   await discussion.save();

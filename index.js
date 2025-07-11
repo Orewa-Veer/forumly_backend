@@ -34,7 +34,7 @@ app.use("/api/login", login);
 app.use("/api/tags", tag);
 app.use("/api/replies", replies);
 app.use("/api/discussion", discussion);
-app.use("/api/upvotes", upvote);
+app.use("/api/upvote", upvote);
 app.use(err);
 
 // server listening

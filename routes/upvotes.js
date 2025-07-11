@@ -6,15 +6,19 @@ import auth from "../middleware/auth.js";
 const router = express.Router();
 router.post("/:id", auth, async (req, res) => {
   const discussId = req.params.id;
-  const error = validateUpvote(discussId);
+
+  const error = validateUpvote({ discussId: discussId.toString() });
   if (error) return res.status(400).json({ error: "Invalid Discussion Id" });
   const discuss = await Discussion.findById(discussId);
   if (!discuss)
     return res
       .status(404)
       .json({ error: "No such discussion found with the given Id" });
-  const upvote = await Upvote.find({ user_id: req.user._id });
-  if (upvote) {
+  const upvote = await Upvote.find({
+    user_id: req.user._id,
+    parent_id: discuss._id,
+  });
+  if (upvote.length !== 0) {
     const session = await mongoose.startSession();
     try {
       session.startTransaction();
@@ -24,18 +28,18 @@ router.post("/:id", auth, async (req, res) => {
         { $inc: { upvoteCounter: -1 } },
         { session }
       );
-      session.commitTransaction();
+      await session.commitTransaction();
       res.send("Done Succesfully");
     } catch (ex) {
-      session.abortTransaction();
+      await session.abortTransaction();
       res.status(500).json({ error: ex });
     } finally {
-      session.endSession();
+      await session.endSession();
     }
   } else {
     const upvote = new Upvote({
       user_id: req.user._id,
-      parent_id: discussId,
+      parent_id: discuss._id,
     });
     const session = await mongoose.startSession();
     try {
@@ -46,13 +50,13 @@ router.post("/:id", auth, async (req, res) => {
         { $inc: { upvoteCounter: 1 } },
         { session }
       );
-      session.commitTransaction();
+      await session.commitTransaction();
       res.send("Done Succesfully");
     } catch (ex) {
-      session.abortTransaction();
+      await session.abortTransaction();
       res.status(500).json({ error: ex });
     } finally {
-      session.endSession();
+      await session.endSession();
     }
   }
 });
