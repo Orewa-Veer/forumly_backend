@@ -10,7 +10,7 @@ import user from "../routes/register.js";
 import replies from "../routes/replies.js";
 import tag from "../routes/tags.js";
 import upvote from "../routes/upvotes.js";
-export default function (app) {
+export default function (app, io) {
   app.use(
     cors({
       origin: "http://localhost:5173", // allow your frontend dev origin

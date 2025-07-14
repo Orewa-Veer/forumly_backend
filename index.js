@@ -19,8 +19,11 @@ const io = new Server(server, {
 
 configureLogic();
 //middleware
-routes(app);
 
+app.get("/", (req, res) => {
+  res.send("API is working!");
+});
+routes(app, io);
 // server listening
 async function startServer() {
   await connectDb();

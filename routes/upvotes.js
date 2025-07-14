@@ -6,60 +6,40 @@ import auth from "../middleware/auth.js";
 const router = express.Router();
 router.post("/:id", auth, async (req, res) => {
   const discussId = req.params.id;
+  // console.log("req.io exists? ", !!req.io);
+  // const error = validateUpvote({ discussId: discussId.toString() });
+  if (!mongoose.Types.ObjectId.isValid(discussId))
+    return res.status(400).json({ error: "Invalid Discussion id" });
 
-  const error = validateUpvote({ discussId: discussId.toString() });
-  if (error) return res.status(400).json({ error: "Invalid Discussion Id" });
   const discuss = await Discussion.findById(discussId);
   if (!discuss)
     return res
       .status(404)
       .json({ error: "No such discussion found with the given Id" });
-  const upvote = await Upvote.findOne({
+  const removed = await Upvote.findOneAndDelete({
     user_id: req.user._id,
     parent_id: discuss._id,
   });
-  if (upvote) {
-    const session = await mongoose.startSession();
-    try {
-      session.startTransaction();
-      await Upvote.findByIdAndDelete(upvote._id, { session });
-      await Discussion.updateOne(
-        { _id: discuss._id },
-        { $inc: { upvoteCounter: -1 } },
-        { session }
-      );
-      await session.commitTransaction();
-      req.io.to("questions:join").emit("discussions:updated", discuss);
-      res.send("Done Succesfully");
-    } catch (ex) {
-      await session.abortTransaction();
-      res.status(500).json({ error: ex });
-    } finally {
-      await session.endSession();
-    }
+  let updateCounter = 0;
+  if (removed) {
+    updateCounter = -1;
   } else {
     const upvote = new Upvote({
       user_id: req.user._id,
       parent_id: discuss._id,
     });
-    const session = await mongoose.startSession();
-    try {
-      session.startTransaction();
-      await upvote.save({ session });
-      await Discussion.updateOne(
-        { _id: discuss._id },
-        { $inc: { upvoteCounter: 1 } },
-        { session }
-      );
-      await session.commitTransaction();
-      req.io.to("questions:join").emit("discussions:updated", discuss);
-      res.send("Done Succesfully");
-    } catch (ex) {
-      await session.abortTransaction();
-      res.status(500).json({ error: ex });
-    } finally {
-      await session.endSession();
-    }
+    await upvote.save();
+    updateCounter = 1;
   }
+  await Discussion.updateOne(
+    { _id: discussId },
+    { $inc: { upvoteCounter: updateCounter } }
+  );
+  const updatedDiscuss = await Discussion.findById(discussId);
+  req.io.to("questions:join").emit("discussions:updated", updatedDiscuss);
+  return res.json({
+    status: removed ? "removed" : "added",
+    upvoteCounter: updatedDiscuss.upvoteCounter,
+  });
 });
 export default router;

@@ -10,12 +10,13 @@ router.get("/:id", async (req, res) => {
   const discuss = await Discussion.findById(parentId);
   if (!discuss) return res.status(404).send("No such discussion found");
   const result = await Reply.find({ parentId: parentId }).populate("user");
+  console.log("req.io exists? ", !!req.io);
   res.json(result);
 });
 router.post("/:id", auth, async (req, res) => {
   const parentId = req.params.id;
-  console.log(parentId);
-  console.log(req.user._id);
+  // console.log(parentId);
+  // console.log(req.user._id);
   const error = replyValidate(req.body);
   if (error)
     return res.status(400).json({ error: "There is a validation error" });
@@ -30,15 +31,18 @@ router.post("/:id", auth, async (req, res) => {
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
-    reply.populate("user");
     await reply.save({ session });
+    await reply.populate({
+      path: "user",
+      select: "username name bio email location",
+    });
     const newDiscuss = await Discussion.findOneAndUpdate(
       { _id: discuss._id },
       { $inc: { replyCounter: 1 } },
       { session, new: true }
     );
     await session.commitTransaction();
-    console.log(newDiscuss);
+    // console.log(newDiscuss);
     req.io.to(`discussion:${parentId}`).emit("reply:updated", reply);
     req.io.to("questions:join").emit("discussions:updated", newDiscuss);
     res.json(reply);
