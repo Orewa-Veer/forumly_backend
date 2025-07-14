@@ -32,13 +32,15 @@ router.post("/:id", auth, async (req, res) => {
     session.startTransaction();
     reply.populate("user");
     await reply.save({ session });
-    await Discussion.updateOne(
+    const newDiscuss = await Discussion.findOneAndUpdate(
       { _id: discuss._id },
       { $inc: { replyCounter: 1 } },
-      { session }
+      { session, new: true }
     );
     await session.commitTransaction();
+    console.log(newDiscuss);
     req.io.to(`discussion:${parentId}`).emit("reply:updated", reply);
+    req.io.to("questions:join").emit("discussions:updated", newDiscuss);
     res.json(reply);
   } catch (ex) {
     await session.abortTransaction();
@@ -53,21 +55,23 @@ router.delete("/:id", auth, async (req, res) => {
   const reqId = req.params.id;
   const reply = await Reply.findById(reqId);
   if (!reply) return res.status(404).send("No such reply found");
-  console.log(`${reply.user}`);
-  console.log(req.user._id);
+  // console.log(`${reply.user}`);
+  // console.log(req.user._id);
   if (`${reply.user}` !== req.user._id)
     return res.status(403).send("Forbidden");
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
     await Reply.deleteOne({ _id: reply._id }, { session });
-    await Discussion.updateOne(
+    const discuss = await Discussion.findOneAndUpdate(
       { _id: reply.parentId },
       { $inc: { replyCounter: -1 } },
-      { session }
+      { session, new: true }
     );
     await session.commitTransaction();
+    console.log(discuss);
     req.io.to(`discussion:${reply.parentId}`).emit("reply:deleted", reply);
+    req.io.to("questions:join").emit("discussions:updated", discuss);
     res.send("Deleted Succesfully");
   } catch (ex) {
     await session.abortTransaction();

@@ -12,6 +12,7 @@ import logger from "./middleware/logger.js";
 import currentUser from "./routes/me.js";
 import err from "./middleware/error.js";
 import replies from "./routes/replies.js";
+import bookmark from "./routes/bookmark.js";
 import upvote from "./routes/upvotes.js";
 import { Server } from "socket.io";
 import { createServer } from "http";
@@ -49,7 +50,9 @@ app.use("/api/login", login);
 app.use("/api/tags", tag);
 app.use("/api/replies", replies);
 app.use("/api/discussion", discussion);
+app.use("/api/bookmark", bookmark);
 app.use("/api/upvote", upvote);
+
 app.use(err);
 mongoose
   .connect("mongodb://localhost/formuly")

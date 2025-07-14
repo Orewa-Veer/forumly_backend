@@ -29,6 +29,7 @@ router.post("/:id", auth, async (req, res) => {
         { session }
       );
       await session.commitTransaction();
+      req.io.to("questions:join").emit("discussions:updated", discuss);
       res.send("Done Succesfully");
     } catch (ex) {
       await session.abortTransaction();
@@ -51,6 +52,7 @@ router.post("/:id", auth, async (req, res) => {
         { session }
       );
       await session.commitTransaction();
+      req.io.to("questions:join").emit("discussions:updated", discuss);
       res.send("Done Succesfully");
     } catch (ex) {
       await session.abortTransaction();

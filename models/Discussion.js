@@ -6,7 +6,7 @@ const discussionSchema = new mongoose.Schema({
   title: { type: String, required: true, minlength: 10, maxlength: 1000 },
   body: { type: String, minlength: 10, maxlength: 2000 },
   createdAt: { type: Date, default: Date.now() },
-  replyCounter: { type: Number, default: 0 },
+  replyCounter: { type: Number, default: 0, min: 0 },
   tags: [
     {
       _id: false,
@@ -14,7 +14,8 @@ const discussionSchema = new mongoose.Schema({
       name: { type: String, required: true },
     },
   ],
-  upvoteCounter: { type: Number, default: 0 },
+  upvoteCounter: { type: Number, default: 0, min: 0 },
+  bookmarks: { type: Number, default: 0, min: 0 },
   isSolved: { type: Boolean, default: false },
 });
 const Discussion = mongoose.model("Discussion", discussionSchema);
