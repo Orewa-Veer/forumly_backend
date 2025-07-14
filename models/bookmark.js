@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const bookmarkSchema = new mongoose.Schema({
   user_id: { type: mongoose.Types.ObjectId, required: true },
   parent_id: { type: mongoose.Types.ObjectId, required: true },
-  date: { type: Date, default: Data.now() },
+  date: { type: Date, default: Date.now() },
 });
 const Bookmark = mongoose.model("Bookmark", bookmarkSchema);
 const validateBookmark = (body) => {

@@ -1,13 +1,14 @@
 import express from "express";
-import { Bookmark, validateBookmark } from "../models/bookmark";
-import auth from "../middleware/auth";
-import { Discussion } from "../models/Discussion";
+import { Bookmark, validateBookmark } from "../models/bookmark.js";
+import auth from "../middleware/auth.js";
+import { Discussion } from "../models/Discussion.js";
 import mongoose from "mongoose";
 const router = express.Router();
 router.post("/:id", auth, async (req, res) => {
   const discussId = req.params.id;
-  const error = validateBookmark(discussId);
-  if (error) return res.status(400).json({ erro: "Invalid discussion Id" });
+  //   console.log(discussId);
+  const error = validateBookmark({ parent_id: discussId });
+  if (error) return res.status(400).json({ error: "Invalid discussion Id" });
   const discuss = await Discussion.findById(discussId);
   if (!discuss)
     return res.status(400).json({ error: "No such Discussion exists" });
@@ -58,3 +59,4 @@ router.post("/:id", auth, async (req, res) => {
     }
   }
 });
+export default router;
