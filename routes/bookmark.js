@@ -4,6 +4,13 @@ import auth from "../middleware/auth.js";
 import { Discussion } from "../models/Discussion.js";
 import mongoose from "mongoose";
 const router = express.Router();
+router.get("/", auth, async (req, res) => {
+  const bookmarks = await Bookmark.find({ user_id: req.user._id })
+    .populate("parent_id")
+    .select("parent_id");
+  console.log(bookmarks);
+  res.json(bookmarks);
+});
 router.post("/:id", auth, async (req, res) => {
   const discussId = req.params.id;
   //   console.log(discussId);
