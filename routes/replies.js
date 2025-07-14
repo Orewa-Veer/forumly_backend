@@ -1,4 +1,5 @@
 import express from "express";
+
 import { Reply, replyValidate } from "../models/replies.js";
 import { Discussion } from "../models/Discussion.js";
 import mongoose from "mongoose";
@@ -16,9 +17,11 @@ router.post("/:id", auth, async (req, res) => {
   console.log(parentId);
   console.log(req.user._id);
   const error = replyValidate(req.body);
-  if (error) return res.status(400).send(error, "This is validation error");
+  if (error)
+    return res.status(400).json({ error: "There is a validation error" });
   const discuss = await Discussion.findById(parentId);
-  if (!discuss) return res.status(404).send("No such discussion found");
+  if (!discuss)
+    return res.status(404).json({ error: "No such discussion exists" });
   const reply = new Reply({
     user: req.user._id,
     parentId: parentId,
@@ -27,6 +30,7 @@ router.post("/:id", auth, async (req, res) => {
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
+    reply.populate("user");
     await reply.save({ session });
     await Discussion.updateOne(
       { _id: discuss._id },
@@ -34,10 +38,13 @@ router.post("/:id", auth, async (req, res) => {
       { session }
     );
     await session.commitTransaction();
+    req.io.to(`discussion:${parentId}`).emit("reply:updated", reply);
     res.json(reply);
   } catch (ex) {
     await session.abortTransaction();
-    res.status(500).send(ex).json({ error: "Could not save reply" });
+    res
+      .status(500)
+      .json({ error: "Could not save reply", details: ex.message });
   } finally {
     session.endSession();
   }
@@ -60,6 +67,7 @@ router.delete("/:id", auth, async (req, res) => {
       { session }
     );
     await session.commitTransaction();
+    req.io.to(`discussion:${reply.parentId}`).emit("reply:deleted", reply);
     res.send("Deleted Succesfully");
   } catch (ex) {
     await session.abortTransaction();

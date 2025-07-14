@@ -14,11 +14,11 @@ router.post("/:id", auth, async (req, res) => {
     return res
       .status(404)
       .json({ error: "No such discussion found with the given Id" });
-  const upvote = await Upvote.find({
+  const upvote = await Upvote.findOne({
     user_id: req.user._id,
     parent_id: discuss._id,
   });
-  if (upvote.length !== 0) {
+  if (upvote) {
     const session = await mongoose.startSession();
     try {
       session.startTransaction();
