@@ -10,6 +10,7 @@ import user from "../routes/register.js";
 import replies from "../routes/replies.js";
 import tag from "../routes/tags.js";
 import upvote from "../routes/upvotes.js";
+import notific from "../routes/notifications.js";
 export default function (app, io) {
   app.use(
     cors({
@@ -30,6 +31,8 @@ export default function (app, io) {
   app.use("/api/login", login);
   app.use("/api/tags", tag);
   app.use("/api/replies", replies);
+  app.use("/api/notification", notific);
+
   app.use("/api/discussion", discussion);
   app.use("/api/bookmark", bookmark);
   app.use("/api/upvote", upvote);

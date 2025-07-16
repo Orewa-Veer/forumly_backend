@@ -4,6 +4,7 @@ const notificationSchema = new mongoose.Schema({
   type: { type: String, enum: ["reply", "upvote"], required: true },
   discussId: { type: mongoose.Types.ObjectId, required: true },
   seen: { type: Boolean, default: false },
+  date: { type: Date, default: Date.now() },
 });
 const Notification = mongoose.model("Notification", notificationSchema);
 
