@@ -1,12 +1,14 @@
 import express from "express";
 import { createServer } from "http";
+import dotenv from "dotenv";
+dotenv.config();
+
 import { Server } from "socket.io";
 import configureLogic from "./startup/configureLogic.js";
 import connectDb from "./startup/Db.js";
 import logger from "./middleware/logger.js";
 import routes from "./startup/routes.js";
 import { registerSocketHandlers } from "./sockets/handler.js";
-
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {

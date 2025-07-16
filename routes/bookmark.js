@@ -6,67 +6,47 @@ import mongoose from "mongoose";
 const router = express.Router();
 router.get("/", auth, async (req, res) => {
   const bookmarks = await Bookmark.find({ user_id: req.user._id })
-    .populate("parent_id")
-    .select({
+    .select("parent_id -_id")
+    .populate({
       path: "parent_id",
       populate: { path: "user", select: "username" },
     });
   console.log(bookmarks);
-  res.json(bookmarks);
+  // const bookmarkCount = await Bookmark.find({
+  //   user_id: req.user._id,
+  // }).countDocuments();
+
+  return res.json(bookmarks);
 });
 router.post("/:id", auth, async (req, res) => {
   const discussId = req.params.id;
   //   console.log(discussId);
-  const error = validateBookmark({ parent_id: discussId });
-  if (error) return res.status(400).json({ error: "Invalid discussion Id" });
+  // const error = validateBookmark({ parent_id: discussId });
+  if (!mongoose.Types.ObjectId.isValid(discussId))
+    return res.status(400).json({ error: "Invalid Discussion Id" });
+  // if (error) return res.status(400).json({ error: "Invalid discussion Id" });
   const discuss = await Discussion.findById(discussId);
   if (!discuss)
     return res.status(400).json({ error: "No such Discussion exists" });
-  let bookmark = await Bookmark.findOne({
+
+  const removed = await Bookmark.findOneAndDelete({
     user_id: req.user._id,
     parent_id: discussId,
   });
-  const session = await mongoose.startSession();
-  if (bookmark) {
-    try {
-      session.startTransaction();
-      await Bookmark.findByIdAndDelete(bookmark._id, { session });
-      await discuss.updateOne({ $inc: { bookmarks: -1 } }, { session });
-      const updated = await Discussion.findById(discuss._id).select(
-        "bookmarks"
-      );
-      await session.commitTransaction();
-      return res.json({ status: "removed", bookmarks: updated.bookmarks });
-    } catch (ex) {
-      await session.abortTransaction();
-      return res
-        .status(500)
-        .json({ error: "Internal error", message: ex.message });
-    } finally {
-      await session.endSession();
-    }
-  } else {
-    bookmark = new Bookmark({
+  if (removed) return res.json({ status: "removed" });
+  else {
+    const bookmark = await Bookmark.create({
       user_id: req.user._id,
       parent_id: discussId,
     });
-    try {
-      session.startTransaction();
-      await bookmark.save({ session });
-      await discuss.updateOne({ $inc: { bookmarks: 1 } }, { session });
-      const updated = await Discussion.findById(discuss._id).select(
-        "bookmarks"
-      );
-      await session.commitTransaction();
-      return res.json({ status: "added", bookmarks: updated.bookmarks });
-    } catch (ex) {
-      await session.abortTransaction();
-      return res
-        .status(500)
-        .json({ error: "Internal error", message: ex.message });
-    } finally {
-      await session.endSession();
-    }
+    const newBook = await Bookmark.findById(bookmark._id)
+      .select("parent_id -_id")
+      .populate({
+        path: "parent_id",
+        populate: { path: "user", select: "username" },
+      });
+    console.log("This is the new bookmark", newBook);
+    return res.json({ status: "added", book: newBook });
   }
 });
 export default router;

@@ -15,7 +15,7 @@ const discussionSchema = new mongoose.Schema({
     },
   ],
   upvoteCounter: { type: Number, default: 0, min: 0 },
-  bookmarks: { type: Number, default: 0, min: 0 },
+
   isSolved: { type: Boolean, default: false },
 });
 const Discussion = mongoose.model("Discussion", discussionSchema);
