@@ -1,5 +1,5 @@
 import express from "express";
-
+import { Notification } from "../models/notifications.js";
 import { Reply, replyValidate } from "../models/replies.js";
 import { Discussion } from "../models/Discussion.js";
 import mongoose from "mongoose";
@@ -40,6 +40,16 @@ router.post("/:id", auth, async (req, res) => {
       { _id: discuss._id },
       { $inc: { replyCounter: 1 } },
       { session, new: true }
+    );
+    await Notification.create(
+      [
+        {
+          userId: discuss.user,
+          type: "reply",
+          discussId: parentId,
+        },
+      ],
+      { session }
     );
     await session.commitTransaction();
     // console.log(newDiscuss);
