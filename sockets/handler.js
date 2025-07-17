@@ -1,6 +1,14 @@
 export function registerSocketHandlers(io) {
   io.on("connection", (socket) => {
     console.log("New Socket: ", socket.id);
+    const userId = socket.handshake.auth.userId;
+    if (userId) {
+      socket.join(userId);
+      // console.log(`User ${userId} connected and joined room`);
+    } else {
+      console.log("No userId in handshake. Connection rejected.");
+      socket.disconnect();
+    }
     socket.on("questions:join", () => {
       socket.join("questions:join");
     });
@@ -8,6 +16,7 @@ export function registerSocketHandlers(io) {
       socket.leave("questions:join");
     });
     socket.on("discussion:join", (discussionId) => {
+      // console.log("This is the discussion id", discussionId);
       socket.join(`discussion:${discussionId}`);
       console.log(`Socket ${socket.id} joined room discussion:${discussionId}`);
     });

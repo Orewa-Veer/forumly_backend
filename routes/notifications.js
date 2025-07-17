@@ -4,9 +4,12 @@ import auth from "../middleware/auth.js";
 const router = express.Router();
 router.get("/", auth, async (req, res) => {
   const userId = req.user._id;
-  const notific = await Notification.find({ userId: userId }).sort({
-    date: -1,
-  });
+  const notific = await Notification.find({ userId: userId })
+    .sort({
+      date: -1,
+    })
+    .populate({ path: "discussId", select: "title" });
+
   return res.json(notific);
 });
 export default router;
