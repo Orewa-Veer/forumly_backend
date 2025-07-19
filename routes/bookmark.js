@@ -11,7 +11,7 @@ router.get("/", auth, async (req, res) => {
       path: "parent_id",
       populate: { path: "user", select: "username" },
     });
-  console.log(bookmarks);
+  // console.log(bookmarks);
   // const bookmarkCount = await Bookmark.find({
   //   user_id: req.user._id,
   // }).countDocuments();
@@ -45,7 +45,7 @@ router.post("/:id", auth, async (req, res) => {
         path: "parent_id",
         populate: { path: "user", select: "username" },
       });
-    console.log("This is the new bookmark", newBook);
+    // console.log("This is the new bookmark", newBook);
     return res.json({ status: "added", book: newBook });
   }
 });

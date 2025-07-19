@@ -17,7 +17,7 @@ router.get("/", auth, async (req, res) => {
   const sortOrder = order === "asc" ? 1 : -1;
   const pageNum = Math.max(1, parseInt(page));
   const pageLim = Math.min(Math.max(10, parseInt(limit)), 100);
-  console.log(filters);
+  // console.log(filters);
   // creating filters
   const filter = {};
   if (filters.user && mongoose.isValidObjectId(filters.user)) {
@@ -32,7 +32,7 @@ router.get("/", auth, async (req, res) => {
   if (filters.title) {
     filter.title = { $regex: filters.title, $options: "i" };
   }
-  console.log(sort);
+  // console.log(sort);
   const result = await Discussion.find({ ...filter })
     .populate("user")
     .sort({ [sort]: sortOrder })
@@ -57,7 +57,7 @@ router.post("/", auth, async (req, res) => {
       return tagin;
     })
   );
-  console.log(allTags);
+  // console.log(allTags);
   const discussion = new Discussion({
     title: req.body.title,
     body: req.body.body,
