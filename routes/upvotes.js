@@ -3,6 +3,7 @@ import { Discussion } from "../models/Discussion.js";
 import { Upvote, validateUpvote } from "../models/upvotes.js";
 import mongoose from "mongoose";
 import auth from "../middleware/auth.js";
+import { Notification } from "../models/notifications.js";
 const router = express.Router();
 router.post("/:id", auth, async (req, res) => {
   const discussId = req.params.id;
@@ -36,7 +37,13 @@ router.post("/:id", auth, async (req, res) => {
     { $inc: { upvoteCounter: updateCounter } }
   );
   const updatedDiscuss = await Discussion.findById(discussId);
+  const newNotific = await Notification.create({
+    userId: updatedDiscuss.user,
+    type: "upvote",
+    discussId: updatedDiscuss._id,
+  });
   req.io.to("questions:join").emit("discussions:updated", updatedDiscuss);
+  req.io.to(`room:${updatedDiscuss.user}`).emit("notification:new", newNotific);
   return res.json({
     status: removed ? "removed" : "added",
     upvoteCounter: updatedDiscuss.upvoteCounter,

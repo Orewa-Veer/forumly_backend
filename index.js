@@ -1,7 +1,6 @@
 import express from "express";
 import { createServer } from "http";
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config";
 
 import { Server } from "socket.io";
 import configureLogic from "./startup/configureLogic.js";
