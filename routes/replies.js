@@ -47,6 +47,7 @@ router.post("/:id", auth, async (req, res) => {
           userId: discuss.user,
           type: "reply",
           discussId: parentId,
+          typeId: reply._id,
         },
       ],
       { session }
@@ -89,8 +90,12 @@ router.delete("/:id", auth, async (req, res) => {
       { $inc: { replyCounter: -1 } },
       { session, new: true }
     );
+    const deletedNotific = await Notification.findOneAndDelete({
+      typeId: reqId,
+    });
     await session.commitTransaction();
     // console.log(discuss);
+    req.io.to(`room:${discuss.user}`).emit("notificDeleted", deletedNotific);
     req.io.to(`discussion:${reply.parentId}`).emit("reply:deleted", reply);
     req.io.to("questions:join").emit("discussions:updated", discuss);
     res.send("Deleted Succesfully");

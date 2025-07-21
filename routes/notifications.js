@@ -38,11 +38,12 @@ router.get("/", auth, async (req, res) => {
   return res.json(notific);
 });
 router.post("/mark-all-seen", auth, async (req, res) => {
-  await Notification.updateMany(
-    { user_id: req.user._id, seen: false },
+  const nofitic = await Notification.updateMany(
+    { userId: req.user._id, seen: false },
     { $set: { seen: true } }
   );
-  res.json({ status: "seen" });
+  req.io.to(`room:${req.user._id}`).emit("allNotification:seen");
+  return res.json({ status: "seen" });
 });
 router.post("/:id", auth, async (req, res) => {
   const notificId = req.params.id;

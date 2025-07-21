@@ -7,6 +7,7 @@ const notificationSchema = new mongoose.Schema({
     ref: "Discussion",
     required: true,
   },
+  typeId: { type: mongoose.Types.ObjectId, required: true },
   seen: { type: Boolean, default: false },
   date: { type: Date, default: Date.now },
 });
