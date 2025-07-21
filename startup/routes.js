@@ -10,6 +10,7 @@ import user from "../routes/register.js";
 import replies from "../routes/replies.js";
 import tag from "../routes/tags.js";
 import upvote from "../routes/upvotes.js";
+import logout from "../routes/logout.js";
 import notific from "../routes/notifications.js";
 export default function (app, io) {
   app.use(
@@ -29,6 +30,7 @@ export default function (app, io) {
   app.use("/api/register", user);
   app.use("/api/me", currentUser);
   app.use("/api/login", login);
+  app.use("/api/logout", logout);
   app.use("/api/tags", tag);
   app.use("/api/replies", replies);
   app.use("/api/notification", notific);
