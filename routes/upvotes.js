@@ -30,6 +30,7 @@ router.post("/:id", auth, async (req, res) => {
   let updateCounter = 0;
   if (removed) {
     updateCounter = -1;
+    await Notification.findOneAndDelete({ typeId: removed._id });
   } else {
     const upvote = new Upvote({
       user_id: req.user._id,
@@ -37,19 +38,24 @@ router.post("/:id", auth, async (req, res) => {
     });
     await upvote.save();
     updateCounter = 1;
+    const newNotific = await Notification.create({
+      userId: discuss.user,
+      type: "upvote",
+      typeId: upvote._id,
+      discussId: discuss._id,
+    });
+    req.io.to(`room:${discuss.user}`).emit("notification:new", newNotific);
   }
   await Discussion.updateOne(
     { _id: discussId },
     { $inc: { upvoteCounter: updateCounter } }
   );
-  const updatedDiscuss = await Discussion.findById(discussId);
-  const newNotific = await Notification.create({
-    userId: updatedDiscuss.user,
-    type: "upvote",
-    discussId: updatedDiscuss._id,
+  const updatedDiscuss = await Discussion.findById(discussId).populate({
+    path: "user",
+    select: "username",
   });
+
   req.io.to("questions:join").emit("discussions:updated", updatedDiscuss);
-  req.io.to(`room:${updatedDiscuss.user}`).emit("notification:new", newNotific);
   return res.json({
     status: removed ? "removed" : "added",
     upvoteCounter: updatedDiscuss.upvoteCounter,

@@ -11,7 +11,6 @@ const repliesSchema = new mongoose.Schema({
 });
 const Reply = mongoose.model("Reply", repliesSchema);
 function replyValidate(body) {
-  const objectId = Joi.string().pattern(/^[0-9a-fA-F]{24}$/);
   const schema = Joi.object({
     body: Joi.string().required().max(20000),
   });

@@ -3,6 +3,7 @@ import { Notification } from "../models/notifications.js";
 import { Reply, replyValidate } from "../models/replies.js";
 import { Discussion } from "../models/Discussion.js";
 import mongoose from "mongoose";
+import sanitizeHtml from "sanitize-html";
 import auth from "../middleware/auth.js";
 const router = express.Router();
 router.get("/:id", async (req, res) => {
@@ -17,6 +18,21 @@ router.post("/:id", auth, async (req, res) => {
   const parentId = req.params.id;
   // console.log(parentId);
   // console.log(req.user._id);
+  // console.log(req.body);
+  const cleanReply = sanitizeHtml(req.body.body, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+      "img",
+      "h1",
+      "h2",
+      "pre",
+      "code",
+    ]),
+    allowedAttributes: {
+      a: ["href", "target"],
+      img: ["src", "alt"],
+    },
+  });
+  // return;
   const error = replyValidate(req.body);
   if (error)
     return res.status(400).json({ error: "There is a validation error" });
@@ -26,7 +42,7 @@ router.post("/:id", auth, async (req, res) => {
   const reply = new Reply({
     user: req.user._id,
     parentId: parentId,
-    body: req.body.body,
+    body: cleanReply,
   });
   const session = await mongoose.startSession();
   try {

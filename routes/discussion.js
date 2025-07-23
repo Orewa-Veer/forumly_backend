@@ -34,7 +34,7 @@ router.get("/", auth, async (req, res) => {
   }
   // console.log(sort);
   const result = await Discussion.find({ ...filter })
-    .populate("user")
+    .populate({ path: "user", select: "username" })
     .sort({ [sort]: sortOrder })
     .limit(pageLim)
     .skip((pageNum - 1) * pageLim);
