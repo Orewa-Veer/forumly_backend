@@ -2,6 +2,7 @@ import express from "express";
 import { Discussion, discussValidate } from "../models/Discussion.js";
 import { User } from "../models/register.js";
 import { Tag } from "../models/tags.js";
+import sanitizeHtml from "sanitize-html";
 import auth from "../middleware/auth.js";
 import mongoose from "mongoose";
 const router = express.Router();
@@ -52,6 +53,39 @@ router.get("/:id", async (req, res) => {
 router.post("/", auth, async (req, res) => {
   const error = discussValidate({ ...req.body, userId: req.user._id });
   if (error) return res.status(400).send(error);
+  const cleanBody = sanitizeHtml(req.body.body, {
+    allowedTags: [
+      "b",
+      "i",
+      "em",
+      "strong",
+      "u",
+      "a",
+      "ul",
+      "ol",
+      "li",
+      "p",
+      "br",
+      "span",
+      "blockquote",
+      "code",
+      "pre",
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+      "h5",
+      "h6",
+      "img",
+    ],
+    allowedAttributes: {
+      a: ["href", "target", "rel"],
+      img: ["src", "alt"],
+      span: ["style"],
+      "*": ["style"], // optional, only if you're allowing inline styles
+    },
+    allowedSchemes: ["http", "https", "mailto"],
+  });
 
   const allTags = await Promise.all(
     req.body.tagId.map(async (tag) => {
@@ -64,7 +98,7 @@ router.post("/", auth, async (req, res) => {
   // console.log(allTags);
   const discussion = new Discussion({
     title: req.body.title,
-    body: req.body.body,
+    body: cleanBody,
     user: { _id: req.user._id },
     tags: allTags,
   });
