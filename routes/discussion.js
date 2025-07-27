@@ -5,6 +5,7 @@ import { Tag } from "../models/tags.js";
 import sanitizeHtml from "sanitize-html";
 import auth from "../middleware/auth.js";
 import mongoose from "mongoose";
+import { limiter } from "../middleware/limiter.js";
 const router = express.Router();
 router.get("/", auth, async (req, res) => {
   const {
@@ -18,15 +19,15 @@ router.get("/", auth, async (req, res) => {
   const sortOrder = order === "asc" ? 1 : -1;
   const pageNum = Math.max(1, parseInt(page));
   const pageLim = Math.min(Math.max(10, parseInt(limit)), 100);
-  // console.log(filters);
+  console.log(filters);
   // creating filters
   const filter = {};
   if (filters.user && mongoose.isValidObjectId(filters.user)) {
     filter.user = new mongoose.Types.ObjectId(filters.user);
   }
-  // if (filters["tags._id"] && mongoose.isValidObjectId(filters[tags._id])) {
-  //   filter["tags._id"] = new mongoose.Types.ObjectId(filter["tags._id"]);
-  // }
+  if (filters["tagId"] && mongoose.isValidObjectId(filters[tagId])) {
+    filter["tags._id"] = new mongoose.Types.ObjectId(filters["tagId"]);
+  }
   if (filters.isSolved) {
     filter.isSolved = filters.isSolved === "true";
   }
@@ -50,7 +51,7 @@ router.get("/:id", async (req, res) => {
   const result = await Discussion.findById(id);
   res.json(result);
 });
-router.post("/", auth, async (req, res) => {
+router.post("/", [auth, limiter], async (req, res) => {
   const error = discussValidate({ ...req.body, userId: req.user._id });
   if (error) return res.status(400).send(error);
   const cleanBody = sanitizeHtml(req.body.body, {

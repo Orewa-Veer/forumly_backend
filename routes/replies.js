@@ -5,6 +5,7 @@ import { Discussion } from "../models/Discussion.js";
 import mongoose from "mongoose";
 import sanitizeHtml from "sanitize-html";
 import auth from "../middleware/auth.js";
+import { limiter } from "../middleware/limiter.js";
 const router = express.Router();
 router.get("/:id", async (req, res) => {
   const parentId = req.params.id;
@@ -14,7 +15,7 @@ router.get("/:id", async (req, res) => {
   // console.log("req.io exists? ", !!req.io);
   res.json({ data: result });
 });
-router.post("/:id", auth, async (req, res) => {
+router.post("/:id", [auth, limiter], async (req, res) => {
   const parentId = req.params.id;
   // console.log(parentId);
   // console.log(req.user._id);
