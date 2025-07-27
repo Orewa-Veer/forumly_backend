@@ -6,6 +6,8 @@ import login from "../routes/auth.js";
 import bookmark from "../routes/bookmark.js";
 import discussion from "../routes/discussion.js";
 import currentUser from "../routes/me.js";
+import helmet from "helmet";
+
 import user from "../routes/register.js";
 import replies from "../routes/replies.js";
 import tag from "../routes/tags.js";
@@ -25,6 +27,7 @@ export default function (app, io) {
   });
   app.use(express.json());
   app.use(cookieParser());
+  app.use(helmet());
 
   // app.use(morgan());
   app.use("/api/register", user);

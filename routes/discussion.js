@@ -91,7 +91,7 @@ router.post("/", auth, async (req, res) => {
     req.body.tagId.map(async (tag) => {
       const tagin = await Tag.findById(tag);
       if (!tagin) throw new Error("No such tag exists with the given id");
-
+      await Tag.updateOne({ _id: tagin._id }, { $inc: { questionCounter: 1 } });
       return tagin;
     })
   );
