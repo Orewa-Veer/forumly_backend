@@ -9,7 +9,7 @@ router.get("/", auth, async (req, res) => {
   const upvotes = await Upvote.find({ user_id: req.user._id }).lean();
   const dicussionIds = upvotes.map((up) => up.parent_id);
   const discussions = await Discussion.find({ _id: { $in: dicussionIds } });
-  return res.json(discussions);
+  return res.json({ data: discussions });
 });
 router.post("/:id", auth, async (req, res) => {
   const discussId = req.params.id;

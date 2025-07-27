@@ -20,17 +20,37 @@ router.post("/:id", auth, async (req, res) => {
   // console.log(req.user._id);
   // console.log(req.body);
   const cleanReply = sanitizeHtml(req.body.body, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-      "img",
+    allowedTags: [
+      "b",
+      "i",
+      "em",
+      "strong",
+      "u",
+      "a",
+      "ul",
+      "ol",
+      "li",
+      "p",
+      "br",
+      "span",
+      "blockquote",
+      "code",
+      "pre",
       "h1",
       "h2",
-      "pre",
-      "code",
-    ]),
+      "h3",
+      "h4",
+      "h5",
+      "h6",
+      "img",
+    ],
     allowedAttributes: {
-      a: ["href", "target"],
+      a: ["href", "target", "rel"],
       img: ["src", "alt"],
+      span: ["style"],
+      "*": ["style"], // optional, only if you're allowing inline styles
     },
+    allowedSchemes: ["http", "https", "mailto"],
   });
   // return;
   const error = replyValidate(req.body);
