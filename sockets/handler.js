@@ -3,7 +3,6 @@ export function registerSocketHandlers(io) {
     console.log("New Socket: ", socket.id);
     const userId = socket.handshake.auth.userId;
     if (userId) {
-      r;
       socket.join(`room:${userId}`);
       console.log(`User ${userId} connected and joined room`);
     } else {

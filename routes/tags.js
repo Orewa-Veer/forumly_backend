@@ -3,7 +3,7 @@ import { Tag, validateTag } from "../models/tags.js";
 const router = express.Router();
 router.get("/", async (req, res) => {
   const result = await Tag.find();
-  res.send(result);
+  res.json({ data: result });
 });
 router.post("/", async (req, res) => {
   const error = validateTag(req.body);

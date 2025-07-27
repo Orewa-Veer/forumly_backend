@@ -35,7 +35,7 @@ router.get("/", auth, async (req, res) => {
     .limit(pageLim)
     .populate({ path: "discussId", select: "title" });
 
-  return res.json(notific);
+  return res.json({ data: notific });
 });
 router.post("/mark-all-seen", auth, async (req, res) => {
   const nofitic = await Notification.updateMany(

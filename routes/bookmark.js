@@ -16,7 +16,7 @@ router.get("/", auth, async (req, res) => {
   //   user_id: req.user._id,
   // }).countDocuments();
 
-  return res.json(bookmarks);
+  return res.json({ data: bookmarks });
 });
 router.post("/:id", auth, async (req, res) => {
   const discussId = req.params.id;

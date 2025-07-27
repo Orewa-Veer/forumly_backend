@@ -12,7 +12,7 @@ router.get("/:id", async (req, res) => {
   if (!discuss) return res.status(404).send("No such discussion found");
   const result = await Reply.find({ parentId: parentId }).populate("user");
   // console.log("req.io exists? ", !!req.io);
-  res.json(result);
+  res.json({ data: result });
 });
 router.post("/:id", auth, async (req, res) => {
   const parentId = req.params.id;
@@ -72,14 +72,14 @@ router.post("/:id", auth, async (req, res) => {
     const newNotific = await Notification.findById(notific._id)
       .populate("discussId")
       .session(session);
-    console.log(newNotific);
+    // console.log(newNotific);
     await session.commitTransaction();
     // console.log(discuss.user);
     req.io.emit("reply:updated", reply);
     req.io.to("questions:join").emit("discussions:updated", newDiscuss);
     // console.log("this is the notification user id", discuss.user);
     req.io.to(`room:${discuss.user}`).emit("notification:new", newNotific);
-    res.json(reply);
+    return res.json({ data: reply });
   } catch (ex) {
     await session.abortTransaction();
     res

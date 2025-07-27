@@ -32,13 +32,17 @@ router.get("/", auth, async (req, res) => {
   if (filters.title) {
     filter.title = { $regex: filters.title, $options: "i" };
   }
+  const totalDocs = await Discussion.countDocuments(filter);
+  const totalPages =
+    totalDocs === 0 ? 0 : Math.floor((totalDocs - 1) / limit) + 1;
+  // console.log(totalPages);
   // console.log(sort);
   const result = await Discussion.find({ ...filter })
     .populate({ path: "user", select: "username" })
     .sort({ [sort]: sortOrder })
     .limit(pageLim)
     .skip((pageNum - 1) * pageLim);
-  res.json(result);
+  res.json({ data: result, totalPages });
 });
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
