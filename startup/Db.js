@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import logger from "../middleware/logger.js";
 export default async function () {
   await mongoose
-    .connect("mongodb://localhost/formuly")
+    .connect(process.env.MONGO_URI)
     .then(() => {
       logger.info("Connected to MongoDB");
     })

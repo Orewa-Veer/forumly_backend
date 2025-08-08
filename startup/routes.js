@@ -17,7 +17,7 @@ import notific from "../routes/notifications.js";
 export default function (app, io) {
   app.use(
     cors({
-      origin: "http://localhost:5173", // allow your frontend dev origin
+      origin: process.env.CLIENT_URL, // allow your frontend dev origin
       credentials: true, // if you send cookies or auth headers
     })
   );
