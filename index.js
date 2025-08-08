@@ -1,14 +1,13 @@
-import express from "express";
-import { createServer } from "http";
 import "dotenv/config";
-
+import { createServer } from "http";
 import { Server } from "socket.io";
+import app from "./app.js";
+import logger from "./middleware/logger.js";
+import { registerSocketHandlers } from "./sockets/handler.js";
 import configureLogic from "./startup/configureLogic.js";
 import connectDb from "./startup/Db.js";
-import logger from "./middleware/logger.js";
 import routes from "./startup/routes.js";
-import { registerSocketHandlers } from "./sockets/handler.js";
-const app = express();
+
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
