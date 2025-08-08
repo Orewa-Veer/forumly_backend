@@ -28,7 +28,7 @@ routes(app, io);
 async function startServer() {
   await connectDb();
   registerSocketHandlers(io);
-  const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT || 10000;
   server.listen(PORT, () => {
     logger.info("Server listening on port 3000");
   });

@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
   const token = user.generateToken();
   res.cookie("token", token, {
     httpOnly: true,
-    secure: false, //swicth back to true and strict
+    secure: true, //swicth back to true and strict
     sameSite: "none",
     maxAge: 24 * 60 * 60 * 1000,
   });
