@@ -30,7 +30,7 @@ async function startServer() {
   registerSocketHandlers(io);
   const PORT = process.env.PORT || 10000;
   server.listen(PORT, () => {
-    logger.info("Server listening on port 3000");
+    logger.info("Server listening on port" + PORT);
   });
 }
 startServer();

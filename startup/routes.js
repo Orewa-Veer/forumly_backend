@@ -25,6 +25,8 @@ export default function (app, io) {
     req.io = io;
     next();
   });
+  app.set("trust proxy", 1);
+
   app.use(express.json());
   app.use(cookieParser());
   app.use(helmet());
