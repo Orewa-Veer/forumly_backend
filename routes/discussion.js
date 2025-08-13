@@ -19,7 +19,7 @@ router.get("/", auth, async (req, res) => {
   const sortOrder = order === "asc" ? 1 : -1;
   const pageNum = Math.max(1, parseInt(page));
   const pageLim = Math.min(Math.max(10, parseInt(limit)), 100);
-  console.log(filters);
+  // console.log(filters);
   // creating filters
   const filter = {};
   if (filters.user && mongoose.isValidObjectId(filters.user)) {

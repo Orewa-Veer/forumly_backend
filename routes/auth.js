@@ -6,7 +6,7 @@ import pick from "lodash.pick";
 const router = express.Router();
 router.post("/", async (req, res) => {
   console.log("Login endpoint hit");
-  console.log("REQ.IO:", req.io);
+  // console.log("REQ.IO:", req.io);
 
   // Try emitting something just to see if req.io works
   if (req.io) {
@@ -21,13 +21,12 @@ router.post("/", async (req, res) => {
     { email: req.body.email },
     { username: req.body.username },
   ]);
-  if (!user) return res.status(400).send("Invalid username or passowrd");
+  if (!user) return res.status(400).send("Invalid username ");
   const isValidPassword = await bcrypt.compare(
     req.body.password,
     user.password
   );
-  if (!isValidPassword)
-    return res.status(400).send("Invalid username or password");
+  if (!isValidPassword) return res.status(400).send("Invalid   password");
   const token = user.generateToken();
   res.cookie("token", token, {
     httpOnly: true,

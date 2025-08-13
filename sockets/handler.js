@@ -1,6 +1,6 @@
 export function registerSocketHandlers(io) {
   io.on("connection", (socket) => {
-    console.log("New Socket: ", socket.id);
+    // console.log("New Socket: ", socket.id);
     const userId = socket.handshake.auth.userId;
     if (userId) {
       socket.join(`room:${userId}`);
@@ -26,7 +26,7 @@ export function registerSocketHandlers(io) {
       console.log("socket disconnected ", socket.id);
     });
     socket.on("disconnect", (reason) => {
-      console.log("Socket disconnected :", reason);
+      // console.log("Socket disconnected :", reason);
     });
   });
 }

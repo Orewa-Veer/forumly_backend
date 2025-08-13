@@ -52,8 +52,8 @@ router.post("/:id", auth, async (req, res) => {
   const notific = await Notification.findById(notificId);
   if (!notific)
     return res.status(404).json({ error: "No such notification found" });
-  console.log(notific.userId.toString());
-  console.log(req.user._id);
+  // console.log(notific.userId.toString());
+  // console.log(req.user._id);
   if (notific.userId.toString() !== req.user._id)
     return res.status(403).json({ error: "Unauthorized" });
   await Notification.updateOne({ _id: notific._id }, { $set: { seen: true } });

@@ -1,4 +1,3 @@
-import config from "config";
 export default function () {
-  if (!config.get("jwtPrivateKey")) throw new Error("Fatal Error");
+  if (!process.env.forumly_jwtPrivateKey) throw new Error("Fatal Error");
 }
