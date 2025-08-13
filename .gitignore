@@ -2,3 +2,4 @@ node_modules/
 **/*.log
 .env.production
 .env.development
+find-bad-routes.js
