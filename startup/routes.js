@@ -38,7 +38,7 @@ export default function (app, io) {
   app.use(express.json());
   app.use(cookieParser());
   app.use(helmet());
-  app.use(morgan("dev"));
+  // app.use(morgan("dev"));
 
   // Routes
   app.use("/api/register", user);

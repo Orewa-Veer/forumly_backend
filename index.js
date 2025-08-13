@@ -8,12 +8,13 @@ dotenv.config({ path: envFile });
 import { createServer } from "http";
 import { Server } from "socket.io";
 import app from "./app.js";
+import mongoose from "mongoose";
 import logger from "./middleware/logger.js";
 import { registerSocketHandlers } from "./sockets/handler.js";
 import configureLogic from "./startup/configureLogic.js";
 import connectDb from "./startup/Db.js";
 import routes from "./startup/routes.js";
-// 
+//
 
 const server = createServer(app);
 const io = new Server(server, {
@@ -39,5 +40,7 @@ async function startServer() {
   server.listen(PORT, () => {
     logger.info("Server listening on port " + PORT);
   });
+  console.log(mongoose.connection.name); // DB name
+  // console.log(await mongoose.connection.db.listCollections().toArray()); // list collections
 }
 startServer();
