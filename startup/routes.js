@@ -17,8 +17,21 @@ import notific from "../routes/notifications.js";
 export default function (app, io) {
   app.use(
     cors({
-      origin: process.env.CLIENT_URL, // alloinw your frontend dev origin
-      credentials: true, // if you send cookies or auth headers
+      origin: process.env.CLIENT_URL,
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+      credentials: true,
+    })
+  );
+
+  // Explicitly handle preflight for all routes
+  app.options(
+    "*",
+    cors({
+      origin: process.env.CLIENT_URL,
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+      credentials: true,
     })
   );
   app.use((req, res, next) => {
