@@ -4,8 +4,9 @@ import mongoose from "mongoose";
 const discussionSchema = new mongoose.Schema({
   user: { type: mongoose.Types.ObjectId, ref: "User", required: true },
   title: { type: String, required: true, minlength: 10, maxlength: 1000 },
-  body: { type: String, minlength: 10, maxlength: 2000 },
+  body: { type: String, minlength: 10 },
   createdAt: { type: Date, default: Date.now() },
+  image: { type: String },
   replyCounter: { type: Number, default: 0, min: 0 },
   tags: [
     {
@@ -25,7 +26,7 @@ function discussValidate(body) {
     userId: objectId.required(),
     tagId: Joi.array().items(objectId).min(1),
     title: Joi.string().required().max(1000),
-    body: Joi.string().required().max(20000),
+    body: Joi.string().required(),
   });
   const { error } = schema.validate(body);
   return error;

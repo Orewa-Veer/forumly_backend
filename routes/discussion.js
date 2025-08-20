@@ -3,6 +3,8 @@ import { Discussion, discussValidate } from "../models/Discussion.js";
 import { User } from "../models/register.js";
 import { Tag } from "../models/tags.js";
 import sanitizeHtml from "sanitize-html";
+import cloudinary from "../cloudinary.js";
+import { upload } from "../middleware/upload.js";
 import auth from "../middleware/auth.js";
 import mongoose from "mongoose";
 import { limiter } from "../middleware/limiter.js";
@@ -25,7 +27,7 @@ router.get("/", auth, async (req, res) => {
   if (filters.user && mongoose.isValidObjectId(filters.user)) {
     filter.user = new mongoose.Types.ObjectId(filters.user);
   }
-  if (filters["tagId"] && mongoose.isValidObjectId(filters[tagId])) {
+  if (filters["tagId"] && mongoose.isValidObjectId(filters["tagId"])) {
     filter["tags._id"] = new mongoose.Types.ObjectId(filters["tagId"]);
   }
   if (filters.isSolved) {
@@ -36,7 +38,7 @@ router.get("/", auth, async (req, res) => {
   }
   const totalDocs = await Discussion.countDocuments(filter);
   const totalPages =
-    totalDocs === 0 ? 0 : Math.floor((totalDocs - 1) / limit) + 1;
+    totalDocs === 0 ? 0 : Math.floor((totalDocs - 1) / pageLim) + 1;
   // console.log(totalPages);
   // console.log(sort);
   const result = await Discussion.find({ ...filter })
@@ -51,26 +53,25 @@ router.get("/:id", async (req, res) => {
   const result = await Discussion.findById(id);
   res.json(result);
 });
-router.post("/", [auth, limiter], async (req, res) => {
+router.post("/", [auth, limiter], upload.single("image"), async (req, res) => {
   const error = discussValidate({ ...req.body, userId: req.user._id });
   if (error) return res.status(400).send(error);
   const cleanBody = sanitizeHtml(req.body.body, {
     allowedTags: [
-      "b",
-      "i",
-      "em",
-      "strong",
-      "u",
       "a",
+      "p",
+      "br",
       "ul",
       "ol",
       "li",
-      "p",
-      "br",
-      "span",
       "blockquote",
       "code",
       "pre",
+      "b",
+      "strong",
+      "i",
+      "em",
+      "u",
       "h1",
       "h2",
       "h3",
@@ -78,15 +79,31 @@ router.post("/", [auth, limiter], async (req, res) => {
       "h5",
       "h6",
       "img",
+      "span",
     ],
     allowedAttributes: {
-      a: ["href", "target", "rel"],
+      a: ["href", "title", "target", "rel"],
       img: ["src", "alt"],
-      span: ["style"],
-      "*": ["style"], // optional, only if you're allowing inline styles
+      code: ["class"],
+      pre: ["class"],
+      span: [],
     },
     allowedSchemes: ["http", "https", "mailto"],
+    allowedSchemesAppliedToAttributes: ["href", "src"],
+    allowProtocolRelative: false,
+    disallowedTagsMode: "discard",
+    enforceHtmlBoundary: true,
   });
+  let imageUrl = null;
+
+  // if an image is uploaded
+  if (req.file) {
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "discussions", // optional: organize in folder
+      resource_type: "image",
+    });
+    imageUrl = result.secure_url;
+  }
 
   const allTags = await Promise.all(
     req.body.tagId.map(async (tag) => {
@@ -102,15 +119,17 @@ router.post("/", [auth, limiter], async (req, res) => {
     body: cleanBody,
     user: { _id: req.user._id },
     tags: allTags,
+    image: imageUrl,
   });
   await discussion.save();
-  res.send(discussion);
+  res.json({ data: discussion });
 });
 router.delete("/:id", auth, async (req, res) => {
   const id = req.params.id;
   const discuss = await Discussion.findById(id);
   if (!discuss) return res.status(400).send("No such discussion exits");
-  if (discuss._id !== req.user._id) return res.status(403).send("Forbidden");
+  if (discuss.user._id.toString() !== req.user._id.toString())
+    return res.status(403).send("Forbidden");
   const deleted = await Discussion.findByIdAndDelete(id);
   res.json(deleted);
 });
