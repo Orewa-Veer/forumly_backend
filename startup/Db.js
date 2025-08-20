@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import logger from "../middleware/logger.js";
+
 export default async function () {
   await mongoose
     .connect(process.env.MONGO_URI)

@@ -1,19 +1,20 @@
 // import "dotenv/config";
 import dotenv from "dotenv";
-const envFile =
-  process.env.NODE_ENV === "production"
-    ? ".env.production"
-    : ".env.development";
-dotenv.config({ path: envFile });
 import { createServer } from "http";
+import mongoose from "mongoose";
 import { Server } from "socket.io";
 import app from "./app.js";
-import mongoose from "mongoose";
+import "./instrument.js";
 import logger from "./middleware/logger.js";
 import { registerSocketHandlers } from "./sockets/handler.js";
 import configureLogic from "./startup/configureLogic.js";
 import connectDb from "./startup/Db.js";
 import routes from "./startup/routes.js";
+const envFile =
+  process.env.NODE_ENV === "production"
+    ? ".env.production"
+    : ".env.development";
+dotenv.config({ path: envFile });
 //
 
 const server = createServer(app);
