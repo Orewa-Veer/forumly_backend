@@ -1,6 +1,6 @@
 import Joi from "joi";
 import mongoose from "mongoose";
-import { Discussion } from "./discussion";
+import { Discussion } from "./discussion.js";
 const bookmarkSchema = new mongoose.Schema({
   user_id: { type: mongoose.Types.ObjectId, required: true },
   parent_id: { type: mongoose.Types.ObjectId, ref: Discussion, required: true },
