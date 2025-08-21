@@ -10,8 +10,8 @@ router.post("/", async (req, res) => {
 
   // Try emitting something just to see if req.io works
   if (req.io) {
-    console.log("Emitting test event...");
-    req.io.emit("test:event", { test: true });
+    // console.log("Emitting test event...");
+    // req.io.emit("test:event", { test: true });
   } else {
     console.log("req.io is undefined!");
   }
@@ -21,12 +21,13 @@ router.post("/", async (req, res) => {
     { email: req.body.email },
     { username: req.body.username },
   ]);
-  if (!user) return res.status(400).send("Invalid username ");
+  if (!user) return res.status(400).send("Invalid username or password ");
   const isValidPassword = await bcrypt.compare(
     req.body.password,
     user.password
   );
-  if (!isValidPassword) return res.status(400).send("Invalid   password");
+  if (!isValidPassword)
+    return res.status(400).send("Invalid username of password");
   const token = user.generateToken();
   res.cookie("token", token, {
     httpOnly: true,

@@ -1,7 +1,7 @@
 import express from "express";
 import { Bookmark, validateBookmark } from "../models/bookmark.js";
 import auth from "../middleware/auth.js";
-import { Discussion } from "../models/Discussion.js";
+import { Discussion } from "../models/discussion.js";
 import mongoose from "mongoose";
 const router = express.Router();
 router.get("/", auth, async (req, res) => {

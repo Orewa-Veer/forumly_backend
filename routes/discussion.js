@@ -1,5 +1,5 @@
 import express from "express";
-import { Discussion, discussValidate } from "../models/Discussion.js";
+import { Discussion, discussValidate } from "../models/discussion.js";
 import { User } from "../models/register.js";
 import { Tag } from "../models/tags.js";
 import sanitizeHtml from "sanitize-html";

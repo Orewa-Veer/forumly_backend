@@ -1,5 +1,5 @@
 import express from "express";
-import { Discussion } from "../models/Discussion.js";
+import { Discussion } from "../models/discussion.js";
 import { Upvote, validateUpvote } from "../models/upvotes.js";
 import mongoose from "mongoose";
 import auth from "../middleware/auth.js";
