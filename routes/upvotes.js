@@ -5,17 +5,18 @@ import mongoose from "mongoose";
 import auth from "../middleware/auth.js";
 import { Notification } from "../models/notifications.js";
 import { limiter } from "../middleware/limiter.js";
+
 const router = express.Router();
+
 router.get("/", auth, async (req, res) => {
   const upvotes = await Upvote.find({ user_id: req.user._id }).lean();
   const dicussionIds = upvotes.map((up) => up.parent_id);
   const discussions = await Discussion.find({ _id: { $in: dicussionIds } });
   return res.json({ data: discussions });
 });
+
 router.post("/:id", [auth, limiter], async (req, res) => {
   const discussId = req.params.id;
-  // console.log("req.io exists? ", !!req.io);
-  // const error = validateUpvote({ discussId: discussId.toString() });
   if (!mongoose.Types.ObjectId.isValid(discussId))
     return res.status(400).json({ error: "Invalid Discussion id" });
 
@@ -62,4 +63,5 @@ router.post("/:id", [auth, limiter], async (req, res) => {
     upvoteCounter: updatedDiscuss.upvoteCounter,
   });
 });
+
 export default router;

@@ -3,15 +3,15 @@ import bcrypt from "bcrypt";
 import Joi from "joi";
 import { User } from "../models/register.js";
 import pick from "lodash.pick";
+
 const router = express.Router();
+
 router.post("/", async (req, res) => {
   console.log("Login endpoint hit");
-  // console.log("REQ.IO:", req.io);
 
-  // Try emitting something just to see if req.io works
   if (req.io) {
-    // console.log("Emitting test event...");
-    // req.io.emit("test:event", { test: true });
+    console.log("Emitting test event...");
+    req.io.emit("test:event", { test: true });
   } else {
     console.log("req.io is undefined!");
   }
@@ -48,4 +48,5 @@ function validate(body) {
   const { error } = schema.validate(body);
   return error;
 }
+
 export default router;

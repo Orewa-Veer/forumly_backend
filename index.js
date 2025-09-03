@@ -10,14 +10,18 @@ import { registerSocketHandlers } from "./sockets/handler.js";
 import configureLogic from "./startup/configureLogic.js";
 import connectDb from "./startup/Db.js";
 import routes from "./startup/routes.js";
+
 const envFile =
   process.env.NODE_ENV === "production"
     ? ".env.production"
     : ".env.development";
-dotenv.config({ path: envFile });
+dotenv.config({
+  path: envFile,
+});
 //
 
 const server = createServer(app);
+
 const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_URL, // allow your frontend dev origin
@@ -32,7 +36,9 @@ configureLogic();
 app.get("/", (req, res) => {
   res.send("API is working!");
 });
+
 routes(app, io);
+
 // server listening
 async function startServer() {
   await connectDb();
@@ -44,4 +50,5 @@ async function startServer() {
   console.log(mongoose.connection.name); // DB name
   // console.log(await mongoose.connection.db.listCollections().toArray()); // list collections
 }
+
 startServer();

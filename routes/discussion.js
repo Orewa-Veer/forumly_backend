@@ -1,14 +1,15 @@
 import express from "express";
-import { Discussion, discussValidate } from "../models/discussion.js";
-import { User } from "../models/register.js";
-import { Tag } from "../models/tags.js";
+import mongoose from "mongoose";
 import sanitizeHtml from "sanitize-html";
 import cloudinary from "../cloudinary.js";
-import { upload } from "../middleware/upload.js";
 import auth from "../middleware/auth.js";
-import mongoose from "mongoose";
 import { limiter } from "../middleware/limiter.js";
+import { upload } from "../middleware/upload.js";
+import { Discussion, discussValidate } from "../models/discussion.js";
+import { Tag } from "../models/tags.js";
+
 const router = express.Router();
+
 router.get("/", auth, async (req, res) => {
   const {
     sort = "createdAt",
@@ -48,11 +49,13 @@ router.get("/", auth, async (req, res) => {
     .skip((pageNum - 1) * pageLim);
   res.json({ data: result, totalPages });
 });
+
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
   const result = await Discussion.findById(id);
   res.json(result);
 });
+
 router.post("/", [auth, limiter], upload.single("image"), async (req, res) => {
   const error = discussValidate({ ...req.body, userId: req.user._id });
   if (error) return res.status(400).send(error);

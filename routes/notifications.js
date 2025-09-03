@@ -1,10 +1,10 @@
 import express from "express";
+import mongoose from "mongoose";
 import auth from "../middleware/auth.js";
 import { Notification } from "../models/notifications.js";
 
-import mongoose from "mongoose";
-import { error } from "console";
 const router = express.Router();
+
 router.get("/", auth, async (req, res) => {
   const userId = req.user._id;
   const {
@@ -37,6 +37,7 @@ router.get("/", auth, async (req, res) => {
 
   return res.json({ data: notific });
 });
+
 router.post("/mark-all-seen", auth, async (req, res) => {
   const nofitic = await Notification.updateMany(
     { userId: req.user._id, seen: false },
@@ -45,6 +46,7 @@ router.post("/mark-all-seen", auth, async (req, res) => {
   req.io.to(`room:${req.user._id}`).emit("allNotification:seen");
   return res.json({ status: "seen" });
 });
+
 router.post("/:id", auth, async (req, res) => {
   const notificId = req.params.id;
   if (!mongoose.Types.ObjectId.isValid(notificId))
@@ -52,11 +54,10 @@ router.post("/:id", auth, async (req, res) => {
   const notific = await Notification.findById(notificId);
   if (!notific)
     return res.status(404).json({ error: "No such notification found" });
-  // console.log(notific.userId.toString());
-  // console.log(req.user._id);
   if (notific.userId.toString() !== req.user._id)
     return res.status(403).json({ error: "Unauthorized" });
   await Notification.updateOne({ _id: notific._id }, { $set: { seen: true } });
   return res.json({ status: "seen" });
 });
+
 export default router;

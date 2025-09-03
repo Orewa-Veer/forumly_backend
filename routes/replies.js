@@ -1,20 +1,22 @@
 import express from "express";
-import { Notification } from "../models/notifications.js";
-import { Reply, replyValidate } from "../models/replies.js";
-import { Discussion } from "../models/discussion.js";
 import mongoose from "mongoose";
 import sanitizeHtml from "sanitize-html";
 import auth from "../middleware/auth.js";
 import { limiter } from "../middleware/limiter.js";
+import { Discussion } from "../models/discussion.js";
+import { Notification } from "../models/notifications.js";
+import { Reply, replyValidate } from "../models/replies.js";
+
 const router = express.Router();
+
 router.get("/:id", async (req, res) => {
   const parentId = req.params.id;
   const discuss = await Discussion.findById(parentId);
   if (!discuss) return res.status(404).send("No such discussion found");
   const result = await Reply.find({ parentId: parentId }).populate("user");
-  // console.log("req.io exists? ", !!req.io);
   res.json({ data: result });
 });
+
 router.post("/:id", [auth, limiter], async (req, res) => {
   const parentId = req.params.id;
   // console.log(parentId);
@@ -53,7 +55,6 @@ router.post("/:id", [auth, limiter], async (req, res) => {
     },
     allowedSchemes: ["http", "https", "mailto"],
   });
-  // return;
   const error = replyValidate(req.body);
   if (error)
     return res.status(400).json({ error: "There is a validation error" });
@@ -110,12 +111,11 @@ router.post("/:id", [auth, limiter], async (req, res) => {
     session.endSession();
   }
 });
+
 router.delete("/:id", auth, async (req, res) => {
   const reqId = req.params.id;
   const reply = await Reply.findById(reqId);
   if (!reply) return res.status(404).send("No such reply found");
-  // console.log(`${reply.user}`);
-  // console.log(req.user._id);
   if (`${reply.user}` !== req.user._id)
     return res.status(403).send("Forbidden");
   const session = await mongoose.startSession();
@@ -131,7 +131,6 @@ router.delete("/:id", auth, async (req, res) => {
       typeId: reqId,
     });
     await session.commitTransaction();
-    // console.log(discuss);
     req.io.to(`room:${discuss.user}`).emit("notificDeleted", deletedNotific);
     req.io.to(`discussion:${reply.parentId}`).emit("reply:deleted", reply);
     req.io.to("questions:join").emit("discussions:updated", discuss);
@@ -143,4 +142,5 @@ router.delete("/:id", auth, async (req, res) => {
     session.endSession();
   }
 });
+
 export default router;

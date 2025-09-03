@@ -1,9 +1,11 @@
 import express from "express";
-import { Bookmark, validateBookmark } from "../models/bookmark.js";
-import auth from "../middleware/auth.js";
-import { Discussion } from "../models/discussion.js";
 import mongoose from "mongoose";
+import auth from "../middleware/auth.js";
+import { Bookmark } from "../models/bookmark.js";
+import { Discussion } from "../models/discussion.js";
+
 const router = express.Router();
+
 router.get("/", auth, async (req, res) => {
   const bookmarks = await Bookmark.find({ user_id: req.user._id })
     .select("parent_id -_id")
@@ -11,20 +13,14 @@ router.get("/", auth, async (req, res) => {
       path: "parent_id",
       populate: { path: "user", select: "username" },
     });
-  // console.log(bookmarks);
-  // const bookmarkCount = await Bookmark.find({
-  //   user_id: req.user._id,
-  // }).countDocuments();
 
   return res.json({ data: bookmarks });
 });
+
 router.post("/:id", auth, async (req, res) => {
   const discussId = req.params.id;
-  //   console.log(discussId);
-  // const error = validateBookmark({ parent_id: discussId });
   if (!mongoose.Types.ObjectId.isValid(discussId))
     return res.status(400).json({ error: "Invalid Discussion Id" });
-  // if (error) return res.status(400).json({ error: "Invalid discussion Id" });
   const discuss = await Discussion.findById(discussId);
   if (!discuss)
     return res.status(400).json({ error: "No such Discussion exists" });
@@ -45,8 +41,8 @@ router.post("/:id", auth, async (req, res) => {
         path: "parent_id",
         populate: { path: "user", select: "username" },
       });
-    // console.log("This is the new bookmark", newBook);
     return res.json({ status: "added", book: newBook });
   }
 });
+
 export default router;

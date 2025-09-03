@@ -2,11 +2,9 @@ import express from "express";
 import { User, userValidate } from "../models/register.js";
 import bcrypt from "bcrypt";
 import pick from "lodash.pick";
+
 const router = express.Router();
-// router.get("/", async (req, res) => {
-//   const result = await User.find();
-//   res.send(result);
-// });
+
 router.post("/", async (req, res) => {
   const error = userValidate(req.body);
   if (error) return res.status(400).send(error);
@@ -30,4 +28,5 @@ router.post("/", async (req, res) => {
 
   res.json(pick(user, ["_id", "username", "email"]));
 });
+
 export default router;

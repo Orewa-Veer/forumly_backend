@@ -1,8 +1,9 @@
 import express from "express";
-import config from "config";
 import jwt from "jsonwebtoken";
 import { User } from "../models/register.js";
+
 const router = express.Router();
+
 router.get("/", async (req, res) => {
   const token = req.cookies.token;
   if (!token) return res.status(401).send("Access Denied. No token provided");
@@ -14,4 +15,5 @@ router.get("/", async (req, res) => {
     res.status(400).send("Invalid token");
   }
 });
+
 export default router;
