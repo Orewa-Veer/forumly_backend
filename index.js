@@ -11,13 +11,11 @@ import configureLogic from "./startup/configureLogic.js";
 import connectDb from "./startup/Db.js";
 import routes from "./startup/routes.js";
 
-const envFile =
-  process.env.NODE_ENV === "production"
-    ? ".env.production"
-    : ".env.development";
-dotenv.config({
-  path: envFile,
-});
+if (process.env.NODE_ENV !== "production") {
+  const dotenv = await import("dotenv");
+  dotenv.config();
+}
+
 //
 
 const server = createServer(app);

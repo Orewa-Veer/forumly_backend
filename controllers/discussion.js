@@ -50,28 +50,7 @@ async function postDiscussion(req, res) {
     if (error) return res.status(400).send(error);
     const cleanBody = sanitizeHtml(req.body.body, {
         allowedTags: [
-            "a",
-            "p",
-            "br",
-            "ul",
-            "ol",
-            "li",
-            "blockquote",
-            "code",
-            "pre",
-            "b",
-            "strong",
-            "i",
-            "em",
-            "u",
-            "h1",
-            "h2",
-            "h3",
-            "h4",
-            "h5",
-            "h6",
-            "img",
-            "span",
+            "a", "p", "br", "ul", "ol", "li", "blockquote", "code", "pre", "b", "strong", "i", "em", "u", "h1", "h2", "h3", "h4", "h5", "h6", "img", "span",
         ],
         allowedAttributes: {
             a: ["href", "title", "target", "rel"],
@@ -86,16 +65,16 @@ async function postDiscussion(req, res) {
         disallowedTagsMode: "discard",
         enforceHtmlBoundary: true,
     });
-    let imageUrl = null;
+    // let imageUrl = null;
 
-    // if an image is uploaded
-    if (req.file) {
-        const result = await cloudinary.uploader.upload(req.file.path, {
-            folder: "discussions", // optional: organize in folder
-            resource_type: "image",
-        });
-        imageUrl = result.secure_url;
-    }
+    // // if an image is uploaded
+    // if (req.file) {
+    //     const result = await cloudinary.uploader.upload(req.file.path, {
+    //         folder: "discussions", // optional: organize in folder
+    //         resource_type: "image",
+    //     });
+    //     imageUrl = result.secure_url;
+    // }
 
     const allTags = await Promise.all(
         req.body.tagId.map(async (tag) => {
@@ -111,7 +90,7 @@ async function postDiscussion(req, res) {
         body: cleanBody,
         user: { _id: req.user._id },
         tags: allTags,
-        image: imageUrl,
+        // image: imageUrl,
     });
     await discussion.save();
     res.json({ data: discussion });
