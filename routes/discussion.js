@@ -11,7 +11,7 @@ router.get("/", auth, getAllDiscussions);
 
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
-  const result = await Discussion.findById(id);
+  const result = await Discussion.findById(id).populate('user', 'name -_id');
   res.json(result);
 });
 
